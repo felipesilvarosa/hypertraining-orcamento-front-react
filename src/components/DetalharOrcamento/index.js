@@ -48,9 +48,9 @@ function DetalharOrcamento(props) {
 					</tr>
 				</thead>
 				<tbody>
-					{itensOrcamentos.map((itemOrcamento) => (
+					{itensOrcamentos.map((itemOrcamento, index) => (
 						<tr key={itemOrcamento.id}>
-							<td>{itemOrcamento.id}</td>
+							<td>{index + 1}</td>
 							<td>{itemOrcamento.origem}</td>
 							<td>{itemOrcamento.codigoItem}</td>
 							<td>{itemOrcamento.descricaoItem}</td>

@@ -10,6 +10,7 @@ function Orcamentos(props) {
 	const [mes, setMes] = React.useState("");
 	const [ano, setAno] = React.useState("");
 	const [valorTotalInformado, setValorTotalInformado] = React.useState("");
+	const [itensOrcamentoCSV, setItensOrcamentoCSV] = React.useState("");
 
 	React.useEffect(loadData, []);
 
@@ -29,10 +30,27 @@ function Orcamentos(props) {
 		});
 	}
 
+	function obterItens() {
+		const linhas = itensOrcamentoCSV.split("\n");
+
+		return linhas.map((linha) => {
+			const atributos = linha.split(";");
+			return {
+				origem: atributos[0],
+				codigoItem: atributos[1],
+				descricaoItem: atributos[2],
+				quantidade: atributos[3],
+				unidadeMedida: atributos[4],
+				valorUnitario: atributos[5],
+				valorTotalInformado: atributos[6],
+			};
+		});
+	}
+
 	function handleSaveClick() {
 		let dados = {
 			orcamento: { descricao, mes, ano, valorTotalInformado },
-			itens: [],
+			itens: obterItens(),
 		};
 
 		axios.post(`/orcamentos`, dados).then(() => {
@@ -139,6 +157,15 @@ function Orcamentos(props) {
 									onChange={(event) =>
 										setValorTotalInformado(event.target.value)
 									}
+								/>
+							</div>
+							<div className="input-group mt-2 mb-2">
+								<textarea
+									classnName="form-control"
+									placeholder="Itens do Orçamento (CSV):"
+									aria-label="Itens do Orçamento (CSV):"
+									value={itensOrcamentoCSV}
+									onChange={(event) => setItensOrcamentoCSV(event.target.value)}
 								/>
 							</div>
 							<button
